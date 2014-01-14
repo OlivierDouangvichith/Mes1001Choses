@@ -1,7 +1,7 @@
 {
   "name": "MesInfosTEST",
   "version": "0.0.1",
-  "description": "An application to get you started with web app development and Cozy.",
+  "description": "An application to get you started with web app development and Cozy. AZERTYYYY",
   "repository": {
     "type": "git",
     "url": "https://github.com/OlivierDouangvichith/Mes1001Choses.git"
@@ -17,7 +17,7 @@
   "scripts": {
     "start": "node server.js"
   },    
-  "cozy-displayName": "Mes Consos",
+  "cozy-displayName": "Mes Infos TEST",
   "cozy-permissions": {
     "ReceiptDetail": {
         "description": "Visualiser les lignes de vos tickets de caisse."
