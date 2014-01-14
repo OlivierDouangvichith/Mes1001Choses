@@ -1,8 +1,8 @@
-## Mes mille et une choses - Mes1001Choses
+## L'application Mes1001Choses
 
 Le code source de l'application Mes1001Choses destinée à fonctionner dans la plate-forme MesInfos
 
-## Application mobile Mes1001Choses
+## L'application mobile Mes1001Choses
 
 L'application Mes1001Choses pour mobile est (bientôt ;-)) disponible sur App Store (iOS) et sur Google Play (Android).
 
