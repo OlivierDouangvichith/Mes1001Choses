@@ -4,7 +4,7 @@ Le code source de l'application Mes1001Choses destinée à fonctionner dans la p
 
 ## Application mobile Mes1001Choses
 
-L'application Mes1001Choses pour mobile est disponible sur App Store (iOS) et sur Google Play (Android).
+L'application Mes1001Choses pour mobile est (bientôt ;-)) disponible sur App Store (iOS) et sur Google Play (Android).
 
 C'est un prototype opérationnel développé à partir d'un scénario "Mon petit monde" développé dans le cadre du projet MesInfos de la FING.
 
