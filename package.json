@@ -19,8 +19,8 @@
   },    
   "cozy-displayName": "Mes Infos TEST",
   "cozy-permissions": {
-    "ReceiptDetail": {
-        "description": "Visualiser les lignes de vos tickets de caisse."
+    "GeolocationLog": {
+        "description": "Visualiser les points GPS."
     }
   }  
   
