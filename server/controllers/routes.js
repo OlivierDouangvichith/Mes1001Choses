@@ -11,6 +11,7 @@ module.exports = {
   'public': {
       get: GeolocationLogs.api
   },
+  
   '*': {
       get: GeolocationLogs.home
   }  

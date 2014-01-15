@@ -13,11 +13,11 @@ module.exports.list = function(req, res) {
 };
 
 module.exports.home = function(req, res) {
-  res.send(200, 'Azerty HOME');
+  res.send(200, 'HOME');
 };
 
 module.exports.api = function(req, res) {
-  res.send(200, 'Azerty API');  
+  res.send(200, 'API');  
 }
 
 
