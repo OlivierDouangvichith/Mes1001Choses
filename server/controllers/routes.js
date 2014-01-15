@@ -8,7 +8,7 @@ module.exports = {
       get: ReceiptDetails.list
   },
   
-  '/': {
+  '*': {
       get: ReceiptDetails.list
   }  
 };
