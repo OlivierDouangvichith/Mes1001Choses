@@ -1,15 +1,18 @@
 /* 
 * Set the routes of your app here.
 */ 
-ReceiptDetails = require('./receiptdetails');
+GeolocationLogs = require('./geolocationlogs');
 
 module.exports = {
-  'receiptdetails': {
-      get: ReceiptDetails.list
+  'locations': {
+      get: GeolocationLogs.list
   },
   
+  'public': {
+      get: GeolocationLogs.api
+  },
   '*': {
-      get: ReceiptDetails.list
+      get: GeolocationLogs.home
   }  
 };
 

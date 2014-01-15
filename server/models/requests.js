@@ -5,7 +5,7 @@
 americano = require('americano');
 
 module.exports = {
-    receiptdetail: {
+    geolocationlog: {
         all: americano.defaultRequests.all
     }
 };
