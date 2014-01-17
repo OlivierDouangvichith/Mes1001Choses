@@ -19,11 +19,14 @@ module.exports.list = function(req, res) {
   });
 };
 
-module.exports.login = function(req, res) {    
+/**
+ *
+ **/
+module.exports.login = function(req, res) {
   var srvUrl = url.parse('http://' + req.url);
     
-  console.log('API /mobileLogin req query : ' + srvUrl.query);
-  console.log('API /mobileLogin host : ' + req.host);
+  console.log('/mobileLogin req query : ' + srvUrl.query);
+  console.log('/mobileLogin host : ' + req.host);
   
   var str = srvUrl.query;
   var result = str.split("=");
@@ -31,42 +34,11 @@ module.exports.login = function(req, res) {
   var token_key = result[0];
   var token_value = result[1];
   
-  console.log('API /mobileLogin token_key : ' + token_key);
-  console.log('API /mobileLogin token_value : ' + token_value);
+  console.log('/mobileLogin token_key : ' + token_key);
+  console.log('/mobileLogin token_value : ' + token_value);
   
   if(token_key == 'token' && token_value.length >0){
-      
-    Identity.one(function(err_id, instances_id) {
-        if(err_id != null) {
-            res.send(500, "An error has occurred mobileLogin Identity-- " + err_id);
-        }
-        else {
-            console.log('API /mobileLogin Identity OK');            
-            var identity = {"Identity": instances_id};
-            
-            /*
-            for (idx in identity.Identity) {
-                idDetail = identity.Identity[idx];                
-                console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
-                console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
-            }*/
-            
-            //1. on envoie un signal de fin de connexion au BOffice
-            performRequest('/api/mesInfosLogin', 'GET', {
-                    methode: 'API_MES1001CHOSES',
-                    execute: 'mesInfosLoginAPI_MES1001CHOSES',
-                    token: token_value,
-                    timestamp:Math.round(+new Date()/1000),
-                    lastName: 'lastName',
-                    firstName: 'firstName'
-                  }, function(data) {
-                      //2. on envoie un message à l'écran
-                      var html = render('mobileLogin');
-                      res.send(200, html);
-                  });
-            }
-    });
-  
+    performMobileLogin(token_value, res);
   }
   else {
     res.send(200, '');
@@ -76,8 +48,46 @@ module.exports.login = function(req, res) {
 
 
 module.exports.home = function(req, res) {
+  var srvUrl = url.parse('http://' + req.url);
+    
+  console.log('HOME req query : ' + srvUrl.query);
+  console.log('HOME host : ' + req.host);
+  
+  var str = srvUrl.query;
+  //var result = str.split("=");
+  var params = str.split("&");     
+  var first_str = params[0];
+  var result = first_str.split("="); 
+  
+  var token_key = result[0];
+  var token_value = result[1];
+  
+  console.log('HOME token_key : ' + token_key);
+  console.log('HOME token_value : ' + token_value);
+  
+  if(token_key == 'token' && token_value.length >0){
+
+      var second_str = params[1];
+      var result_login = second_str.split("=");
+      
+      var login_key = result_login[0];
+      var login_value = result_login[1];
+    
+      if(login_key == 'login' && login_value == 'mobileLogin'){
+          performMobileLogin(token_value, res);
+      }
+      else {
+  
+      res.send(200, '');
+      }
+
+  }
+  else {
+
   var html = render('home');
   res.send(200, html);
+  }
+  
 };
 
 /**
@@ -348,4 +358,41 @@ function performRequest(endpoint, method, data, success) {
 
   req.write(dataString);
   req.end();
+};
+
+
+function performMobileLogin(token, response) {
+
+    Identity.one(function(err_id, instances_id) {
+        if(err_id != null) {
+            err_id.send(500, "An error has occurred mobileLogin Identity-- " + err_id);
+        }
+        else {
+            console.log('API /mobileLogin Identity OK');            
+            var identity = {"Identity": instances_id};
+            
+            /*
+            for (idx in identity.Identity) {
+                idDetail = identity.Identity[idx];                
+                console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
+                console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
+            }*/
+            
+            //1. on envoie un signal de fin de connexion au BOffice
+            performRequest('/api/mesInfosLogin', 'GET', {
+                    methode: 'API_MES1001CHOSES',
+                    execute: 'mesInfosLoginAPI_MES1001CHOSES',
+                    token: token,
+                    timestamp:Math.round(+new Date()/1000),
+                    lastName: 'lastName',
+                    firstName: 'firstName'
+                  }, function(data) {
+                      //2. on envoie un message à l'écran
+                      var html = render('mobileLogin');
+                      response.send(200, html);
+                  });
+            }
+    });
+
+
 }
