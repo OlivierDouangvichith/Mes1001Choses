@@ -21,7 +21,10 @@
   "cozy-permissions": {
     "GeolocationLog": {
         "description": "Visualiser les points GPS de vos déplacements."
-    }
+    },
+    "Identity": {
+        "description": "Visualiser votre nom et prénom."
+    }    
   }  
   
 }

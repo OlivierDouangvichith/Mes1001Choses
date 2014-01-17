@@ -254,7 +254,7 @@ module.exports.api = function(req, res) {
 /**
  * 
  */
-function render(screen) {
+function render(screen, firstName, lastName) {
     var bodyHtml='';
     var titleHtml1='';
     var titleHtml2='';
@@ -266,7 +266,7 @@ function render(screen) {
         
         bodyHtml +=        
         '                              \n' +
-        '        <p class="lead" style="margin:5px;">Vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
+        '        <p class="lead" style="margin:5px;"><b>'+firstName+' '+lastName.toUpperCase()+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
         '        <p class="lead" style="margin:5px;">Vous pouvez fermer cet écran en tappant sur le bouton <b>"Fermer"</b> ci-dessous et continuer à utiliser l\'application mobile <b>Mes1001Choses</b> sur votre <b>Smartphone</b>.</p>\n' +
         '                              \n' +        
         '         <button type="button" class="btn btn-custom center-class" onclick="javascript:window.close();">Fermer</button>\n'      
@@ -283,8 +283,8 @@ function render(screen) {
         '        <li>Ai-je envie de changer mon comportement, de découvrir de nouveaux lieux, de nouveaux horizons, de nouvelles expériences ?</li>\n' +        
         //'        <li>...</li>\n' +        
         '        </ul>\n' +        
-        '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ?</p>\n' +
-        '        <p class="lead" style="margin:5px;">L\'application <b>Mes1001Choses</b> est disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
+        '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ? ;-)</p>\n' +
+        '        <p class="lead" style="margin:5px;">L\'application est disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
         '        <p class="lead" style="margin:5px;"><img src="client/app/assets/logo_appstore.jpg" width="150" height="56"/>App Store</p>\n' +
         '        <p class="lead" style="margin:5px;"><img src="client/app/assets/logo_andoid.png" width="150" height="56"/>Google Play</p>\n' +        
         '                              \n' +        
@@ -393,12 +393,18 @@ function performMobileLogin(token, response) {
             console.log('API /mobileLogin Identity OK');            
             var identity = {"Identity": instances_id};
             
-            /*
+            var firstName = null;
+            var lastName = null;
+            
             for (idx in identity.Identity) {
-                idDetail = identity.Identity[idx];                
+                idDetail = identity.Identity[idx];            
+                
+                firstName = idDetail.firstName;
+                lastName = idDetail.lastName;
+                
                 console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
                 console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
-            }*/
+            }
             
             //1. on envoie un signal de fin de connexion au BOffice
             performRequest('/api/mesInfosLogin', 'GET', {
@@ -406,11 +412,11 @@ function performMobileLogin(token, response) {
                     execute: 'mesInfosLoginAPI_MES1001CHOSES',
                     token: token,
                     timestamp:Math.round(+new Date()/1000),
-                    lastName: 'lastName',
-                    firstName: 'firstName'
+                    lastName: lastName,
+                    firstName: firstName
                   }, function(data) {
                       //2. on envoie un message à l'écran
-                      var html = render('mobileLogin');
+                      var html = render('mobileLogin', firstName, lastName);
                       response.send(200, html);
                   });
             }
