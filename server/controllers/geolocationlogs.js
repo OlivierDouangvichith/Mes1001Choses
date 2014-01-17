@@ -5,7 +5,8 @@ var querystring = require('querystring');
 GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
-var host_backoffice = 'localhost.pixarusBackOffice.com';
+//var host_backoffice = 'localhost.pixarusBackOffice.com';
+var host_backoffice = 'pixarus.com';
 
 module.exports.list = function(req, res) {
   GeolocationLog.all(function(err, instances) {
