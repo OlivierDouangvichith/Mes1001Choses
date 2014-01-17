@@ -46,7 +46,9 @@ module.exports.login = function(req, res) {
       
 };
 
-
+/**
+ * 
+ **/
 module.exports.home = function(req, res) {
   var srvUrl = url.parse('http://' + req.url);
     
@@ -101,6 +103,11 @@ module.exports.home = function(req, res) {
 /**
  * Traitement des appel API entre Cozy et l'appli mobile.
  * Format de requete : /public?q=requete&token=12345azerty678ghvbnSDrfff
+ * 
+ * REQUESTE :
+ * 1. checkConnection
+ * 2. mobileLogin
+ * 3. locations
  */
 module.exports.api = function(req, res) {
     //console.log('API /public req method : ' + req.method);
@@ -159,6 +166,12 @@ module.exports.api = function(req, res) {
 
                 res.send(200, data_out);
             }
+            //Login
+            else if('mobileLogin' == requete){
+                console.log('API /public LOGIN');
+                
+                performMobileLogin(token_value, res);
+            }
             //Locations
             else if('locations' == requete){
                 console.log('API /public LOCATIONS');
@@ -172,7 +185,7 @@ module.exports.api = function(req, res) {
 
                         Identity.one(function(err_id, instances_id) {
                             if(err_id != null) {
-                              res.send(500, "An error has occurred Identity-- " + err_id);
+                              err_id.send(500, "An error has occurred Identity-- " + err_id);
                           }
                           else {
                                 console.log('API /public LOCATIONS Identity OK');
