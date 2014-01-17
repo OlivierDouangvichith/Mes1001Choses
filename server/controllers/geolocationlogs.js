@@ -54,38 +54,46 @@ module.exports.home = function(req, res) {
   console.log('HOME host : ' + req.host);
   
   var str = srvUrl.query;
-  //var result = str.split("=");
-  var params = str.split("&");     
-  var first_str = params[0];
-  var result = first_str.split("="); 
   
-  var token_key = result[0];
-  var token_value = result[1];
-  
-  console.log('HOME token_key : ' + token_key);
-  console.log('HOME token_value : ' + token_value);
-  
-  if(token_key == 'token' && token_value.length >0){
+  if(str){
 
-      var second_str = params[1];
-      var result_login = second_str.split("=");
-      
-      var login_key = result_login[0];
-      var login_value = result_login[1];
-    
-      if(login_key == 'login' && login_value == 'mobileLogin'){
-          performMobileLogin(token_value, res);
+      //var result = str.split("=");
+      var params = str.split("&");     
+      var first_str = params[0];
+      var result = first_str.split("="); 
+
+      var token_key = result[0];
+      var token_value = result[1];
+
+      console.log('HOME token_key : ' + token_key);
+      console.log('HOME token_value : ' + token_value);
+
+      if(token_key == 'token' && token_value.length >0){
+
+          var second_str = params[1];
+          var result_login = second_str.split("=");
+
+          var login_key = result_login[0];
+          var login_value = result_login[1];
+
+          if(login_key == 'login' && login_value == 'mobileLogin'){
+              performMobileLogin(token_value, res);
+          }
+          else {
+
+          res.send(200, '');
+          }
+
       }
       else {
-  
+
       res.send(200, '');
       }
 
   }
   else {
-
-  var html = render('home');
-  res.send(200, html);
+    var html = render('home');
+    res.send(200, html);
   }
   
 };
