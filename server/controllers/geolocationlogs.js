@@ -5,8 +5,8 @@ var querystring = require('querystring');
 GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
-//var host_backoffice = 'localhost.pixarusBackOffice.com';
-var host_backoffice = 'pixarus.com';
+var host_backoffice = 'localhost.pixarusBackOffice.com';
+//var host_backoffice = 'pixarus.com';
 
 module.exports.list = function(req, res) {
   GeolocationLog.all(function(err, instances) {
@@ -285,13 +285,12 @@ function render(screen, firstName, lastName) {
         '        </ul>\n' +        
         '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ? ;-)</p>\n' +
         '        <p class="lead" style="margin:5px;">L\'application est disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
-        '        <p class="lead" style="margin:5px;"><img src="client/app/assets/logo_appstore.jpg" width="150" height="56"/>App Store</p>\n' +
-        '        <p class="lead" style="margin:5px;"><img src="client/app/assets/logo_andoid.png" width="150" height="56"/>Google Play</p>\n' +        
+        '        <p class="lead" style="margin:5px;"><img src="public/logo_appstore.jpg" width="150" height="56"/>App Store</p>\n' +
+        '        <p class="lead" style="margin:5px;"><img src="public/logo_andoid.png" width="150" height="56"/>Google Play</p>\n' +        
         '                              \n' +        
         '         \n'      
         
     }
-
 
     var header = 
 '<!DOCTYPE html>\n' +
@@ -315,7 +314,6 @@ function render(screen, firstName, lastName) {
 '    <div class="container">\n' +
 '      <h1>'+titleHtml2+'</h1>\n' +
 '      <div class="row">\n' ;
-
 
     var footer = 
 '      </div>\n' +
