@@ -4,8 +4,8 @@
 GeolocationLogs = require('./geolocationlogs');
 
 module.exports = {
-  'locations': {
-      get: GeolocationLogs.list
+  'mobileLogin': {
+      get: GeolocationLogs.login
   },
   
   'public': {
