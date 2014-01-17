@@ -1,7 +1,7 @@
 {
-  "name": "MesInfosTEST",
+  "name": "Mes1001Choses",
   "version": "0.0.1",
-  "description": "An application to get you started with web app development and Cozy. AZERTYYYY",
+  "description": "L'application Mes1001Choses permet de mieux se connaître pour élargir ses horizons. Elle vous révèle vos routines (géographiques, comportementales, …) et vous permet de les évaluer",
   "repository": {
     "type": "git",
     "url": "https://github.com/OlivierDouangvichith/Mes1001Choses.git"
@@ -17,10 +17,10 @@
   "scripts": {
     "start": "node server.js"
   },    
-  "cozy-displayName": "Mes Infos TEST",
+  "cozy-displayName": "Mes1001Choses",
   "cozy-permissions": {
     "GeolocationLog": {
-        "description": "Visualiser les points GPS."
+        "description": "Visualiser les points GPS de vos déplacements."
     }
   }  
   
