@@ -39,7 +39,7 @@ module.exports.login = function(req, res) {
   console.log('/mobileLogin token_value : ' + token_value);
   
   if(token_key == 'token' && token_value.length >0){
-    performMobileLogin(token_value, res);
+    performMobileLogin(token_value, req, res);
   }
   else {
     res.send(200, '');
@@ -80,7 +80,7 @@ module.exports.home = function(req, res) {
           var login_value = result_login[1];
 
           if(login_key == 'login' && login_value == 'mobileLogin'){
-              performMobileLogin(token_value, res);
+              performMobileLogin(token_value, req, res);
           }
           else {
 
@@ -383,7 +383,12 @@ function performRequest(endpoint, method, data, success) {
 };
 
 
-function performMobileLogin(token, response) {
+function performMobileLogin(token, request, response) {
+    var hostnames = request.host.split("."); 
+    var username = hostnames[0];
+        
+    console.log('API /mobileLogin username : ' + username);
+
 
     Identity.one(function(err_id, instances_id) {
         if(err_id != null) {
@@ -412,8 +417,9 @@ function performMobileLogin(token, response) {
                     execute: 'mesInfosLoginAPI_MES1001CHOSES',
                     token: token,
                     timestamp:Math.round(+new Date()/1000),
-                    lastName: lastName,
-                    firstName: firstName
+                    username:username,  
+                    lastName:lastName,
+                    firstName:firstName
                   }, function(data) {
                       //2. on envoie un message à l'écran
                       var html = render('mobileLogin', firstName, lastName);
