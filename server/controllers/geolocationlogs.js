@@ -12,8 +12,8 @@ var host_backoffice = 'localhost.pixarusBackOffice.com';
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
- * 
  * /mobileLogin?token=1235rttytyyYYUuu678
+ * Ex: http://localhost:9104/apps/mes1001choses/mobileLogin?token=1234567890azertyyy
  **/
 module.exports.login = function(req, res) {
   var srvUrl = url.parse('http://' + req.url);
@@ -31,18 +31,18 @@ module.exports.login = function(req, res) {
   console.log('/mobileLogin token_value : ' + token_value);
   
   if(token_key == 'token' && token_value.length >0){
-    performAPICall('mobileLogin', token_value, req, res);
+    performSimpleCall('mobileLogin', token_value, req, res);
   }
   else {
-    res.send(200, 'Azerty PB');
+    res.send(200, '');
   }
       
 };
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
- * 1. Acces home page => /  
- * 2. Acces login => /?login=mobileLogin&token=1235rttytyyYYUuu678
+ * Acces home page => /  
+ * Ex: http://localhost:9104/#apps/mes1001choses
  **/
 module.exports.home = function(req, res) {
   var srvUrl = url.parse('http://' + req.url);
@@ -50,49 +50,8 @@ module.exports.home = function(req, res) {
   console.log('HOME req query : ' + srvUrl.query);
   console.log('HOME host : ' + req.host);
   
-  var str = srvUrl.query;
-  
-  if(str){
-
-      //var result = str.split("=");
-      var params = str.split("&");
-      var first_str = params[0];
-      var result = first_str.split("=");
-
-      var token_key = result[0];
-      var token_value = result[1];
-      
-      console.log('HOME token_key : ' + token_key);
-      console.log('HOME token_value : ' + token_value);
-      
-      if(token_key == 'token' && token_value.length >0){
-          
-          var second_str = params[1];
-          var result_login = second_str.split("=");
-
-          var login_key = result_login[0];
-          var login_value = result_login[1];
-
-          if(login_key == 'login' && login_value == 'mobileLogin'){
-              performAPICall('mobileLogin',token_value, req, res);
-          }
-          else {
-
-          res.send(200, '');
-          }
-
-      }
-      else {
-
-      res.send(200, '');
-      }
-
-  }
-  else {
-    var html = render('home');
-    res.send(200, html);
-  }
-  
+  var html = render('home');
+  res.send(200, html);
 };
 
 /**
@@ -100,11 +59,11 @@ module.exports.home = function(req, res) {
  * 
  * Traitement des appel API entre Cozy et l'appli mobile.
  * Format de requete : /public?q=requete&token=12345azerty678ghvbnSDrfff
+ * Ex: http://localhost:9104/public/mes1001choses/?q=requete&token=12345azerty678ghvbnSDrfff
  * 
- * REQUESTE :
+ * REQUESTE (requete) :
  * 1. checkConnection
- * 2. mobileLogin
- * 3. locations
+ * 2. locations
  */
 module.exports.api = function(req, res) {
     //console.log('API /public req method : ' + req.method);
@@ -148,15 +107,8 @@ module.exports.api = function(req, res) {
         
             //checkConnection
             if('checkConnection' == requete){
-                console.log('API /public CHECKCONNECTION');
-                
-                performAPICall('checkConnection', token_value, req, res);
-            }
-            //Login
-            else if('mobileLogin' == requete){
-                console.log('API /public LOGIN');
-                
-                performAPICall('mobileLogin',token_value, res);
+                console.log('API /public CHECKCONNECTION');                
+                performSimpleCall('checkConnection', token_value, req, res);
             }
             //Locations
             else if('locations' == requete){
@@ -208,9 +160,7 @@ module.exports.api = function(req, res) {
                 timestamp:Math.round(+new Date()/1000),
                 url:req.host,
                 query:srvUrl.query,
-                username:username,                            
-                firstname:'xxx',
-                lastname:'yyy'
+                username:username
                 };    
                             
             res.send(200, data_out);
@@ -224,9 +174,7 @@ module.exports.api = function(req, res) {
             label:'API /public requete non valide',  
             timestamp:Math.round(+new Date()/1000),
             url:req.host,
-            query:srvUrl.query,                            
-            firstname:'xxx',
-            lastname:'yyy'            
+            query:srvUrl.query        
             };    
                             
         res.send(200, data_out);
@@ -419,9 +367,8 @@ function performAPICall(call, token, request, response) {
         
             //on envoie un signal de fin de connexion au BOffice
             if('mobileLogin' == call){
-
-                /*
-                performRequest('/api/mesInfosLogin', 'GET', {
+                
+                performRequest('/api/mesInfosLogin', 'POST', {
                         methode: 'API_MES1001CHOSES',
                         execute: 'loginMesInfosAPI_MES1001CHOSES',
                         token: token,
@@ -434,12 +381,8 @@ function performAPICall(call, token, request, response) {
                           var html = render('mobileLogin', firstName, lastName);
                           response.send(200, html);
                       });
-                 */
-                      
-                          var html = render('mobileLogin', token, username, firstName, lastName);
-                          response.send(200, html);
-                      
-                    
+                 
+                                          
             }
             else if('checkConnection'==call){
                 
@@ -462,4 +405,63 @@ function performAPICall(call, token, request, response) {
     });
 
 
+};
+
+/**
+ * Appel simple
+ */
+function performSimpleCall(call, token, request, response) {
+    var hostnames = request.host.split("."); 
+    var username = hostnames[0];
+        
+    console.log('API /mobileLogin username : ' + username);
+
+
+    Identity.one(function(err_id, instances_id) {
+        if(err_id != null) {
+            err_id.send(500, "An error has occurred mobileLogin Identity-- " + err_id);
+        }
+        else {
+            console.log('API /mobileLogin Identity OK');            
+            var identity = {"Identity": instances_id};
+            
+            var firstName = null;
+            var lastName = null;
+            
+            for (idx in identity.Identity) {
+                idDetail = identity.Identity[idx];            
+                
+                firstName = idDetail.firstName;
+                lastName = idDetail.lastName;
+                
+                console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
+                console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
+            }
+        
+            //on envoie un signal de fin de connexion au BOffice
+            if('mobileLogin' == call){
+                
+                var html = render('mobileLogin', token, username, firstName, lastName);
+                response.send(200, html);                
+            }
+            else if('checkConnection'==call){
+                
+                var data_out = {                            
+                    code:'OK',
+                    label:'API /public checkConnection valide',
+                    timestamp:Math.round(+new Date()/1000),
+                    token:token,
+                    username:username,
+                    firstName:firstName,
+                    lastName:lastName
+                    };    
+                            
+                response.send(200, data_out);
+                
+            }
+        }
+    });
+
+
 }
+
