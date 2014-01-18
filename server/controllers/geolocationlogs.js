@@ -297,7 +297,7 @@ function render(screen, token, username, firstName, lastName) {
 'function performAPICallLoginMesInfos() {\n' +        
 'jQuery.post("http://'+host_backoffice+api_end_point+'",\n' +        
 '            {                  \n' +        
-'             method: "API_MES1001CHOSES",\n' +        
+'             methode: "API_MES1001CHOSES",\n' +        
 '             execute: "loginMesInfosAPI_MES1001CHOSES",\n' +        
 '             token: "'+token+'",\n' +        
 '             timestamp:'+Math.round(+new Date()/1000)+',\n' +        
