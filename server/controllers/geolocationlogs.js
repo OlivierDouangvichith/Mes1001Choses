@@ -269,8 +269,8 @@ function render(screen, firstName, lastName) {
         '        </ul>\n' +        
         '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ? ;-)</p>\n' +
         '        <p class="lead" style="margin:5px;">L\'application est disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
-        '        <p class="lead" style="margin:5px;"><img src="public/logo_appstore.jpg" width="150" height="56"/>App Store</p>\n' +
-        '        <p class="lead" style="margin:5px;"><img src="public/logo_andoid.png" width="150" height="56"/>Google Play</p>\n' +        
+        '        <p class="lead" style="margin:5px;"><img src="img/logo_appstore.jpg" width="150" height="56"/>App Store</p>\n' +
+        '        <p class="lead" style="margin:5px;"><img src="img/logo_andoid.png" width="150" height="56"/>Google Play</p>\n' +        
         '                              \n' +        
         '         \n'      
         
