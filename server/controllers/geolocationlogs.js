@@ -254,7 +254,7 @@ function render(screen, token, username, firstName, lastName) {
         '        <p class="lead" style="margin:5px;"><b>'+firstName+' '+lastName.toUpperCase()+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
         '        <p class="lead" style="margin:5px;">Vous pouvez fermer cet écran en tappant sur le bouton <b>"Fermer"</b> ci-dessous et continuer à utiliser l\'application mobile <b>Mes1001Choses</b> sur votre <b>Smartphone</b>.</p>\n' +
         '                              \n' +        
-        '         <button type="button" class="btn btn-custom center-class" onclick="javascript:performAPICallLoginMesInfos;">Fermer</button>\n'      
+        '         <button type="button" class="btn btn-custom center-class" onclick="javascript:performAPICallLoginMesInfos();">Fermer</button>\n'      
 
     }
     else if('home' == screen){        
