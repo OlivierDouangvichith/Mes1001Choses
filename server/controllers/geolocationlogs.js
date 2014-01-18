@@ -5,6 +5,7 @@ var querystring = require('querystring');
 GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
+var api_end_point = '/api/mesInfosLogin';
 var host_backoffice = 'localhost.pixarusBackOffice.com';
 //var host_backoffice = 'pixarus.com';
 
@@ -238,7 +239,7 @@ module.exports.api = function(req, res) {
 /**
  * 
  */
-function render(screen, firstName, lastName) {
+function render(screen, token, username, firstName, lastName) {
     var bodyHtml='';
     var titleHtml1='';
     var titleHtml2='';
@@ -253,7 +254,7 @@ function render(screen, firstName, lastName) {
         '        <p class="lead" style="margin:5px;"><b>'+firstName+' '+lastName.toUpperCase()+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
         '        <p class="lead" style="margin:5px;">Vous pouvez fermer cet écran en tappant sur le bouton <b>"Fermer"</b> ci-dessous et continuer à utiliser l\'application mobile <b>Mes1001Choses</b> sur votre <b>Smartphone</b>.</p>\n' +
         '                              \n' +        
-        '         <button type="button" class="btn btn-custom center-class" onclick="javascript:window.close();">Fermer</button>\n'      
+        '         <button type="button" class="btn btn-custom center-class" onclick="javascript:performAPICallLoginMesInfos;">Fermer</button>\n'      
 
     }
     else if('home' == screen){        
@@ -291,6 +292,26 @@ function render(screen, firstName, lastName) {
 '    .btn.center-class {width:25%; display:block; margin: 0 auto;}\n' +
 '    .btn-custom { background-color: hsl(0, 0%, 85%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d8d8d8", endColorstr="#d8d8d8"); background-image: -khtml-gradient(linear, left top, left bottom, from(#d8d8d8), to(#d8d8d8)); background-image: -moz-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: -ms-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d8d8d8), color-stop(100%, #d8d8d8)); background-image: -webkit-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: -o-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: linear-gradient(#d8d8d8, #d8d8d8); border-color: #d8d8d8 #d8d8d8 hsl(0, 0%, 85%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.00); -webkit-font-smoothing: antialiased; }\n' +
 '    </style>\n' +
+
+'<script type="text/javascript">\n' +        
+'function performAPICallLoginMesInfos() {\n' +        
+'jQuery.post("'+host_backoffice+api_end_point+'",\n' +        
+'            {                  \n' +        
+'             method: "API_MES1001CHOSES",\n' +        
+'             execute: "loginMesInfosAPI_MES1001CHOSES",\n' +        
+'             token: "'+token+'",\n' +        
+'             timestamp:'+Math.round(+new Date()/1000)+',\n' +        
+'             username:"'+username+'",\n' +        
+'             lastName:"'+lastName+'",\n' +        
+'             firstName:"'+firstName+'"\n' +        
+'                              \n' +        
+'            },\n' +        
+'            function(msg) {\n' +        
+'                window.close();\n' +        
+'                }\n' +
+'         );\n' +        
+'}\n' +        
+'</script>\n' +        
 
 '  </head>\n' +
 
@@ -415,7 +436,7 @@ function performAPICall(call, token, request, response) {
                       });
                  */
                       
-                          var html = render('mobileLogin', firstName, lastName);
+                          var html = render('mobileLogin', token, username, firstName, lastName);
                           response.send(200, html);
                       
                     
