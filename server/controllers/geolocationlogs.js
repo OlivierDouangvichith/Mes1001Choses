@@ -33,7 +33,7 @@ module.exports.login = function(req, res) {
     performAPICall('mobileLogin', token_value, req, res);
   }
   else {
-    res.send(200, '');
+    res.send(200, 'Azerty PB');
   }
       
 };
