@@ -397,8 +397,9 @@ function performAPICall(call, token, request, response) {
             }
         
             //on envoie un signal de fin de connexion au BOffice
-            if('mobileLogin'==call){
-                   
+            if('mobileLogin' == call){
+
+                /*
                 performRequest('/api/mesInfosLogin', 'GET', {
                         methode: 'API_MES1001CHOSES',
                         execute: 'loginMesInfosAPI_MES1001CHOSES',
@@ -412,6 +413,11 @@ function performAPICall(call, token, request, response) {
                           var html = render('mobileLogin', firstName, lastName);
                           response.send(200, html);
                       });
+                 */
+                      
+                          var html = render('mobileLogin', firstName, lastName);
+                          response.send(200, html);
+                      
                     
             }
             else if('checkConnection'==call){
