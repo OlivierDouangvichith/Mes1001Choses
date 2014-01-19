@@ -135,10 +135,10 @@ module.exports.api = function(req, res) {
                                     token:token_value,
                                     url:req.host,
                                     query:srvUrl.query,
-                                    username:username,
+                                    username:username
 
-                                    identity : {"Identity": instances_id},
-                                    data: {"GeolocationLog": instances}
+                                    //identity : {"Identity": instances_id},
+                                    //data: {"GeolocationLog": instances}
                                     };    
                                     
                                 var data_out_json = array2json(data_out);
