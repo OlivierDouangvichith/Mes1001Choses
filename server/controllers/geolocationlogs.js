@@ -6,9 +6,8 @@ GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
 var api_end_point = '/api/mesInfosLogin';
-var host_backoffice = 'localhost.pixarusBackOffice.com';
-//var host_backoffice = 'pixarus.com';
-
+//var host_backoffice = 'localhost.pixarusBackOffice.com';
+var host_backoffice = 'pixarus.com';
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
@@ -141,9 +140,9 @@ module.exports.api = function(req, res) {
                                     identity : {"Identity": instances_id},
                                     data: {"GeolocationLog": instances}
                                     };    
-                            
-                                res.send(200, data_out);  
-
+                                    
+                                var data_out_json = array2json(data_out);
+                                res.send(200, data_out_json);  
                               }
                             });                
 
@@ -161,9 +160,10 @@ module.exports.api = function(req, res) {
                 url:req.host,
                 query:srvUrl.query,
                 username:username
-                };    
-                            
-            res.send(200, data_out);
+                };  
+                
+            var data_out_json = array2json(data_out);                            
+            res.send(200, data_out_json);
         }
              
     }
@@ -176,8 +176,9 @@ module.exports.api = function(req, res) {
             url:req.host,
             query:srvUrl.query        
             };    
-                            
-        res.send(200, data_out);
+            
+        var data_out_json = array2json(data_out);                            
+        res.send(200, data_out_json);
     }
     
   //res.send(200, data_out);  
@@ -455,8 +456,8 @@ function performSimpleCall(call, token, request, response) {
                     firstName:firstName,
                     lastName:lastName
                     };    
-                            
-                response.send(200, data_out);
+                var data_out_json = array2json(data_out);                            
+                response.send(200, data_out_json);
                 
             }
         }
@@ -464,4 +465,39 @@ function performSimpleCall(call, token, request, response) {
 
 
 }
+
+
+
+function array2json(arr) {
+    var parts = [];
+    var is_list = (Object.prototype.toString.apply(arr) === '[object Array]');
+
+    for(var key in arr) {
+    	var value = arr[key];
+        if(typeof value == "object") { //Custom handling for arrays
+            if(is_list) parts.push(array2json(value)); /* :RECURSION: */
+            else parts.push('"' + key + '":' + array2json(value)); /* :RECURSION: */
+            //else parts[key] = array2json(value); /* :RECURSION: */
+            
+        } else {
+            var str = "";
+            if(!is_list) str = '"' + key + '":';
+
+            //Custom handling for multiple data types
+            if(typeof value == "number") str += value; //Numbers
+            else if(value === false) str += 'false'; //The booleans
+            else if(value === true) str += 'true';
+            else str += '"' + value + '"'; //All other things
+            // :TODO: Is there any more datatype we should be in the lookout for? (Functions?)
+
+            parts.push(str);
+        }
+    }
+    var json = parts.join(",");
+    
+    if(is_list) return '[' + json + ']';//Return numerical JSON
+    
+    return '{' + json + '}';//Return associative JSON
+}
+
 
