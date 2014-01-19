@@ -142,7 +142,7 @@ module.exports.api = function(req, res) {
                                     }];    
                                     
                                 var data_out_json = array2json(data_out);
-                                res.send(200, data_out);  
+                                res.send(200, data_out_json);  
                               }
                             });                
 
@@ -497,7 +497,7 @@ function array2json(arr) {
     
     if(is_list) return '[' + json + ']';//Return numerical JSON
     
-    return '[{' + json + '}]';//Return associative JSON
+    return '{' + json + '}';//Return associative JSON
 }
 
 
