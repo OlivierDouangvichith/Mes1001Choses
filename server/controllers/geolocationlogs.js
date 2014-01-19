@@ -128,7 +128,7 @@ module.exports.api = function(req, res) {
                                 console.log('API /public LOCATIONS Identity OK');
                                 //var data_id =  {"Identity": instances_id}
                                 
-                                /*
+                                
                                 data_out = [{                            
                                     code:'OK',
                                     label:'API /public locations valide',
@@ -140,13 +140,12 @@ module.exports.api = function(req, res) {
 
                                     identity : {"Identity": instances_id},
                                     data: {"GeolocationLog": instances}
-                                    }];    */
+                                    }];
                                 
-                                data_out = {"GeolocationLog": instances};
-                                    
-                                var data_out_json = array2json(data_out);
-                                //res.send(200, JSON.stringify(data_out));  
-                                res.send(200, data_out.GeolocationLog);  
+                                //data_out = {"GeolocationLog": instances};                                    
+                                //var data_out_json = array2json(data_out);
+                                res.send(200, JSON.stringify(data_out));  
+                                //res.send(200, data_out.GeolocationLog);  
                               }
                             });                
 
