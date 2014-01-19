@@ -20,16 +20,10 @@ module.exports.login = function(req, res) {
   console.log('/mobileLogin req query : ' + srvUrl.query);
   console.log('/mobileLogin host : ' + req.host);
   
-  var str = srvUrl.query;
-  var result = str.split("=");
-  
-  var token_key = result[0];
-  var token_value = result[1];
-  
-  console.log('/mobileLogin token_key : ' + token_key);
+  var token_value = req.query.token;
   console.log('/mobileLogin token_value : ' + token_value);
   
-  if(token_key == 'token' && token_value.length >0){
+  if(token_value.length >0){
     performSimpleCall('mobileLogin', token_value, req, res);
   }
   else {
@@ -65,40 +59,23 @@ module.exports.home = function(req, res) {
  * 2. locations
  */
 module.exports.api = function(req, res) {
-    //console.log('API /public req method : ' + req.method);
-    //console.log('API /public req path : ' + req.path);
-    //console.log('API /public req url : ' + req.url);
-    
     var data_out = null;    
     var srvUrl = url.parse('http://' + req.url);
     
     console.log('API /public req query : ' + srvUrl.query);
     console.log('API /public host : ' + req.host);
     
-    var str = srvUrl.query;
-    var params = str.split("&"); 
-    
-    var first_str = params[0];
-    
-    var result = first_str.split("="); 
-    
-    if(result[0] == 'q' && req.host.length >0){
+    if(req.query.q.length >0 && req.host.length >0){
         
         var hostnames = req.host.split("."); 
         var username = hostnames[0];
         
         console.log('API /public username : ' + username);
-        console.log('API /public q : ' + result[0]);
-        console.log('API /public requete : ' + result[1]);
+        console.log('API /public requete : ' + req.query.q);
         
-        var requete = result[1];
-
-        var second_str = params[1];
-        var tokens = second_str.split("=");
-        var token_key = tokens[0];
-        var token_value = tokens[1];
+        var requete = req.query.q;
+        var token_value = req.query.token;
         
-        console.log('API /public token_key : ' + token_key);
         console.log('API /public token_value : ' + token_value);
         
         //Test de username et token
@@ -115,20 +92,19 @@ module.exports.api = function(req, res) {
                 
                   GeolocationLog.all(function(err, instances) {
                     if(err != null) {
-                      res.send(500, "An error has occurred -- " + err);
+                      res.end(500, "An error has occurred -- " + err);
                     }
                     else {
                         console.log('API /public LOCATIONS OK');
 
                         Identity.one(function(err_id, instances_id) {
                             if(err_id != null) {
-                              err_id.send(500, "An error has occurred Identity-- " + err_id);
+                              err_id.end(500, "An error has occurred Identity-- " + err_id);
                           }
                           else {
                                 console.log('API /public LOCATIONS Identity OK');
                                 //var data_id =  {"Identity": instances_id}
-                                
-                                
+                                                                
                                 data_out = {                            
                                     code:'OK',
                                     label:'API /public locations valide',
@@ -141,28 +117,19 @@ module.exports.api = function(req, res) {
                                     identity : {"Identity": instances_id},
                                     data: {"GeolocationLog": instances}
                                     };
-                                
-                                //1. cas d'appel depuis ST
-                                if(params.length >=3){
-                                    var troisieme_str = params[2];
-                                    var callback = troisieme_str.split("=");
-                                    
-                                    var callback_key = callback[0];
-                                    var callback_value = callback[1];
-                                    
-                                    if('callback' == callback_key){
-                                        res.send(200, JSON.stringify(callback_value+'('+data_out+')'));  
-                                    }
-                                    
-                                }
-                                //2. cas d'appel normal
-                                else {
 
-                                    //data_out = {"GeolocationLog": instances};                                    
-                                    //var data_out_json = array2json(data_out);
-                                    res.send(200, JSON.stringify(data_out));  
-                                    //res.send(200, data_out.GeolocationLog);  
-                                    }
+                                var cb = req.query.callback;
+                                var jsonP = false;
+                                    
+                                console.log('API /public callback_value callback : ' + cb);
+                                    
+                                if (cb != null) {
+                                    jsonP = true;
+                                    res.writeHead(200, {'Content-Type': 'text/javascript', 'connection' : 'close'});
+                                    } else {res.writeHead(200, {'Content-Type': "application/x-json"});}
+                                        
+                                if (jsonP) {res.end(cb +  "(" + JSON.stringify(data_out) + ");" );}
+                                else { res.end(JSON.stringify(data_out));}                                    
                               }
                             });                
 
@@ -182,13 +149,13 @@ module.exports.api = function(req, res) {
                 username:username
                 };  
                 
-            var data_out_json = array2json(data_out);                            
-            res.send(200, data_out_json);
+            res.writeHead(200, {'Content-Type': "application/x-json"});
+            res.end(JSON.stringify(data_out));
         }
              
     }
     else {
-        console.log('API /public requete non valide');
+        console.log('API /public requete non valide');        
         data_out = {
             code:'KO',
             label:'API /public requete non valide',  
@@ -197,8 +164,8 @@ module.exports.api = function(req, res) {
             query:srvUrl.query        
             };    
             
-        var data_out_json = array2json(data_out);                            
-        res.send(200, data_out_json);
+        res.writeHead(200, {'Content-Type': "application/x-json"});
+        res.end(JSON.stringify(data_out));
     }
     
   //res.send(200, data_out);  
@@ -440,7 +407,7 @@ function performSimpleCall(call, token, request, response) {
 
     Identity.one(function(err_id, instances_id) {
         if(err_id != null) {
-            err_id.send(500, "An error has occurred mobileLogin Identity-- " + err_id);
+            err_id.end(500, "An error has occurred mobileLogin Identity-- " + err_id);
         }
         else {
             console.log('API /mobileLogin Identity OK');            
@@ -476,8 +443,9 @@ function performSimpleCall(call, token, request, response) {
                     firstName:firstName,
                     lastName:lastName
                     };    
-                var data_out_json = array2json(data_out);                            
-                response.send(200, data_out_json);
+                    
+                response.writeHead(200, {'Content-Type': "application/x-json"});
+                response.end(JSON.stringify(data_out));
                 
             }
         }
@@ -485,39 +453,4 @@ function performSimpleCall(call, token, request, response) {
 
 
 }
-
-
-
-function array2json(arr) {
-    var parts = [];
-    var is_list = (Object.prototype.toString.apply(arr) === '[object Array]');
-
-    for(var key in arr) {
-    	var value = arr[key];
-        if(typeof value == "object") { //Custom handling for arrays
-            if(is_list) parts.push(array2json(value)); /* :RECURSION: */
-            else parts.push('"' + key + '":' + array2json(value)); /* :RECURSION: */
-            //else parts[key] = array2json(value); /* :RECURSION: */
-            
-        } else {
-            var str = "";
-            if(!is_list) str = '"' + key + '":';
-
-            //Custom handling for multiple data types
-            if(typeof value == "number") str += value; //Numbers
-            else if(value === false) str += 'false'; //The booleans
-            else if(value === true) str += 'true';
-            else str += '"' + value + '"'; //All other things
-            // :TODO: Is there any more datatype we should be in the lookout for? (Functions?)
-
-            parts.push(str);
-        }
-    }
-    var json = parts.join(",");
-    
-    if(is_list) return '[' + json + ']';//Return numerical JSON
-    
-    return '{' + json + '}';//Return associative JSON
-}
-
 
