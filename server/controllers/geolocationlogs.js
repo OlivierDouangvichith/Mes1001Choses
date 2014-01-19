@@ -133,16 +133,16 @@ module.exports.api = function(req, res) {
                                     label:'API /public locations valide',
                                     timestamp:Math.round(+new Date()/1000),
                                     token:token_value,
-                                    url:req.host,
-                                    query:srvUrl.query,
-                                    username:username
+                                    //url:req.host,
+                                    //query:srvUrl.query,
+                                    username:username,
 
-                                    //identity : {"Identity": instances_id},
-                                    //data: {"GeolocationLog": instances}
+                                    identity : {"Identity": instances_id},
+                                    data: {"GeolocationLog": instances}
                                     };    
                                     
                                 var data_out_json = array2json(data_out);
-                                res.send(200, data_out_json);  
+                                res.send(200, data_out);  
                               }
                             });                
 
