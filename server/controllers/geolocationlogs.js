@@ -142,7 +142,7 @@ module.exports.api = function(req, res) {
                                     }];    
                                     
                                 var data_out_json = array2json(data_out);
-                                res.send(200, data_out_json);  
+                                res.send(200, JSON.stringify(data_out));  
                               }
                             });                
 
