@@ -129,7 +129,7 @@ module.exports.api = function(req, res) {
                                 //var data_id =  {"Identity": instances_id}
                                 
                                 
-                                data_out = [{                            
+                                data_out = {                            
                                     code:'OK',
                                     label:'API /public locations valide',
                                     timestamp:Math.round(+new Date()/1000),
@@ -140,12 +140,29 @@ module.exports.api = function(req, res) {
 
                                     identity : {"Identity": instances_id},
                                     data: {"GeolocationLog": instances}
-                                    }];
+                                    };
                                 
-                                //data_out = {"GeolocationLog": instances};                                    
-                                //var data_out_json = array2json(data_out);
-                                res.send(200, JSON.stringify(data_out));  
-                                //res.send(200, data_out.GeolocationLog);  
+                                //1. cas d'appel depuis ST
+                                if(params.length >=3){
+                                    var troisieme_str = params[2];
+                                    var callback = troisieme_str.split("=");
+                                    
+                                    var callback_key = callback[0];
+                                    var callback_value = callback[1];
+                                    
+                                    if('callback' == callback_key){
+                                        res.send(200, JSON.stringify(callback_value+'('+data_out+')'));  
+                                    }
+                                    
+                                }
+                                //2. cas d'appel normal
+                                else {
+
+                                    //data_out = {"GeolocationLog": instances};                                    
+                                    //var data_out_json = array2json(data_out);
+                                    res.send(200, JSON.stringify(data_out));  
+                                    //res.send(200, data_out.GeolocationLog);  
+                                    }
                               }
                             });                
 
