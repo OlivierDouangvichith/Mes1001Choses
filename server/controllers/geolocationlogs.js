@@ -282,10 +282,10 @@ function render(screen, token, username, firstName, lastName) {
 '    <meta charset="utf-8">\n' +
 '    <title>'+titleHtml1+'</title>\n' +
 '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-
 '    <!-- Bootstrap -->\n' +
-'    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" media="screen">\n' +
-
+'    <!-- link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" media="screen" -->\n' +
+'    <link rel="stylesheet" href="stylesheets/app.css" media="screen">\n' +
+    
 '    <style type="text/css">\n' +
 '    .btn.center-class {width:25%; display:block; margin: 0 auto;}\n' +
 '    .btn-custom { background-color: hsl(0, 0%, 85%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d8d8d8", endColorstr="#d8d8d8"); background-image: -khtml-gradient(linear, left top, left bottom, from(#d8d8d8), to(#d8d8d8)); background-image: -moz-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: -ms-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d8d8d8), color-stop(100%, #d8d8d8)); background-image: -webkit-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: -o-linear-gradient(top, #d8d8d8, #d8d8d8); background-image: linear-gradient(#d8d8d8, #d8d8d8); border-color: #d8d8d8 #d8d8d8 hsl(0, 0%, 85%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.00); -webkit-font-smoothing: antialiased; }\n' +
