@@ -267,7 +267,7 @@ function render(screen, token, username, firstName, lastName) {
         //'        <li>...</li>\n' +        
         '        </ul>\n' +        
         '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ? ;-)</p>\n' +
-        '        <p class="lead" style="margin:5px;">L\'application est bientôt disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
+        '        <p class="lead" style="margin:5px;">L\'application est <b>bientôt</b> disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
         '        <p class="lead" style="margin:5px;"><a href="#" border="0"><img src="img/logo_appstore.jpg" width="100" height="37"/></a></p>\n' +
         '        <p class="lead" style="margin:5px;"><a href="#" border="0"><img src="img/logo_andoid.png" width="100" height="37"/></a></p>\n' +        
         '                              \n' +        
