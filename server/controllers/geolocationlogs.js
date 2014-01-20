@@ -117,19 +117,8 @@ module.exports.api = function(req, res) {
                                     identity : {"Identity": instances_id},
                                     data: {"GeolocationLog": instances}
                                     };
-
-                                var cb = req.query.callback;
-                                var jsonP = false;
-                                    
-                                console.log('API /public callback_value callback : ' + cb);
-                                    
-                                if (cb != null) {
-                                    jsonP = true;
-                                    res.writeHead(200, {'Content-Type': 'text/javascript', 'connection' : 'close'});
-                                    } else {res.writeHead(200, {'Content-Type': "application/x-json"});}
-                                        
-                                if (jsonP) {res.end(cb +  "(" + JSON.stringify(data_out) + ");" );}
-                                else { res.end(JSON.stringify(data_out));}                                    
+                                
+                                responseApiCall(data_out, req, res);
                               }
                             });                
 
@@ -148,9 +137,8 @@ module.exports.api = function(req, res) {
                 query:srvUrl.query,
                 username:username
                 };  
-                
-            res.writeHead(200, {'Content-Type': "application/x-json"});
-            res.end(JSON.stringify(data_out));
+
+            responseApiCall(data_out, req, res);
         }
              
     }
@@ -163,17 +151,91 @@ module.exports.api = function(req, res) {
             url:req.host,
             query:srvUrl.query        
             };    
-            
-        res.writeHead(200, {'Content-Type': "application/x-json"});
-        res.end(JSON.stringify(data_out));
+        
+        responseApiCall(data_out, req, res);
     }
     
-  //res.send(200, data_out);  
 };
+
+/**
+ * Appel simple
+ */
+function performSimpleCall(call, token, request, response) {
+    var hostnames = request.host.split("."); 
+    var username = hostnames[0];
+        
+    console.log('API /mobileLogin username : ' + username);
+
+    Identity.one(function(err_id, instances_id) {
+        if(err_id != null) {
+            err_id.end(500, "An error has occurred mobileLogin Identity-- " + err_id);
+        }
+        else {
+            console.log('API /mobileLogin Identity OK');            
+            var identity = {"Identity": instances_id};
+            
+            var firstName = null;
+            var lastName = null;
+            
+            for (idx in identity.Identity) {
+                idDetail = identity.Identity[idx];            
+                
+                firstName = idDetail.firstName;
+                lastName = idDetail.lastName;
+                
+                console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
+                console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
+            }
+        
+            //on envoie un signal de fin de connexion au BOffice
+            if('mobileLogin' == call){
+                
+                var html = render('mobileLogin', token, username, firstName, lastName);
+                response.send(200, html);                
+            }
+            else if('checkConnection'==call){
+                
+                var data_out = {                            
+                    code:'OK',
+                    label:'API /public checkConnection valide',
+                    timestamp:Math.round(+new Date()/1000),
+                    token:token,
+                    username:username,
+                    firstName:firstName,
+                    lastName:lastName
+                    };    
+                
+                responseApiCall(data_out, request, response);
+            }
+        }
+    });
+
+}
+
+
+    /**
+     * Retour au serveur apres un apple API
+     */
+function responseApiCall(data, req, res) {
+    console.log('responseApiCall');    
+
+    var cb = req.query.callback;
+    var jsonP = false;
+
+    console.log('responseApiCall callback : ' + cb);
+
+    if (cb != null) {
+        jsonP = true;
+        res.writeHead(200, {'Content-Type': 'text/javascript', 'connection' : 'close'});
+    } else {res.writeHead(200, {'Content-Type': "application/x-json"});}
+
+    if (jsonP) {res.end(cb +  "(" + JSON.stringify(data) + ");" );}
+    else { res.end(JSON.stringify(data));}
+}
 
 
 /**
- * 
+ * Affichage sur l'écran MesInfos
  */
 function render(screen, token, username, firstName, lastName) {
     var bodyHtml='';
@@ -270,187 +332,3 @@ function render(screen, token, username, firstName, lastName) {
 
     return header + bodyHtml + footer ;
 }
-
-/**
- * Calling a REST API from a NodeJS Script !!!
- */
-function performRequest(endpoint, method, data, success) {
-  //console.log('performRequest data : '+data);
-  //console.log('performRequest data.methode : '+data.methode);
-  //console.log('performRequest data.execute : '+data.execute);
-    
-  var dataString = JSON.stringify(data);  
-  //console.log('performRequest dataString : '+dataString);
-  
-  var headers = {};
-  
-  if (method == 'GET') {
-    endpoint += '?' + querystring.stringify(data);
-  }
-  else {
-    headers = {
-      'Content-Type': 'application/json',
-      'Content-Length': dataString.length
-    };
-  }
-  
-  var options = {
-    host: host_backoffice,
-    path: endpoint,
-    method: method,
-    headers: headers
-  };
-
-  var req = http.request(options, function(res) {
-    res.setEncoding('utf-8');
-    var responseString = '';
-
-    res.on('data', function(data) {
-      //console.log('performRequest res data : '+data);
-      responseString += data;
-    });
-
-    res.on('end', function() {
-      //console.log('performRequest res end : '+responseString);
-      var responseObject = JSON.parse(responseString);      
-      success(responseObject);
-    });
-  });
-
-  req.write(dataString);
-  req.end();
-};
-
-/**
- * Tous les appels API vers le BackOffice passent par cette fonction
- * 
- */
-function performAPICall(call, token, request, response) {
-    var hostnames = request.host.split("."); 
-    var username = hostnames[0];
-        
-    console.log('API /mobileLogin username : ' + username);
-
-
-    Identity.one(function(err_id, instances_id) {
-        if(err_id != null) {
-            err_id.send(500, "An error has occurred mobileLogin Identity-- " + err_id);
-        }
-        else {
-            console.log('API /mobileLogin Identity OK');            
-            var identity = {"Identity": instances_id};
-            
-            var firstName = null;
-            var lastName = null;
-            
-            for (idx in identity.Identity) {
-                idDetail = identity.Identity[idx];            
-                
-                firstName = idDetail.firstName;
-                lastName = idDetail.lastName;
-                
-                console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
-                console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
-            }
-        
-            //on envoie un signal de fin de connexion au BOffice
-            if('mobileLogin' == call){
-                
-                performRequest('/api/mesInfosLogin', 'POST', {
-                        methode: 'API_MES1001CHOSES',
-                        execute: 'loginMesInfosAPI_MES1001CHOSES',
-                        token: token,
-                        timestamp:Math.round(+new Date()/1000),
-                        username:username,  
-                        lastName:lastName,
-                        firstName:firstName
-                      }, function(data) {
-                          //2. on envoie un message à l'écran
-                          var html = render('mobileLogin', firstName, lastName);
-                          response.send(200, html);
-                      });
-                 
-                                          
-            }
-            else if('checkConnection'==call){
-                
-                performRequest('/api/mesInfosLogin', 'GET', {
-                        methode: 'API_MES1001CHOSES',
-                        execute: 'checkConnectionAPI_MES1001CHOSES',
-                        token: token,
-                        timestamp:Math.round(+new Date()/1000),
-                        username:username,  
-                        lastName:lastName,
-                        firstName:firstName
-                      }, function(data) {
-                          //On envoie un date en retour                          
-                          response.send(200, data);
-                      });
-                
-                    
-            }
-        }
-    });
-
-
-};
-
-/**
- * Appel simple
- */
-function performSimpleCall(call, token, request, response) {
-    var hostnames = request.host.split("."); 
-    var username = hostnames[0];
-        
-    console.log('API /mobileLogin username : ' + username);
-
-
-    Identity.one(function(err_id, instances_id) {
-        if(err_id != null) {
-            err_id.end(500, "An error has occurred mobileLogin Identity-- " + err_id);
-        }
-        else {
-            console.log('API /mobileLogin Identity OK');            
-            var identity = {"Identity": instances_id};
-            
-            var firstName = null;
-            var lastName = null;
-            
-            for (idx in identity.Identity) {
-                idDetail = identity.Identity[idx];            
-                
-                firstName = idDetail.firstName;
-                lastName = idDetail.lastName;
-                
-                console.log('API /mobileLogin Identity lastName='+idDetail.lastName); 
-                console.log('API /mobileLogin Identity firstName='+idDetail.firstName); 
-            }
-        
-            //on envoie un signal de fin de connexion au BOffice
-            if('mobileLogin' == call){
-                
-                var html = render('mobileLogin', token, username, firstName, lastName);
-                response.send(200, html);                
-            }
-            else if('checkConnection'==call){
-                
-                var data_out = {                            
-                    code:'OK',
-                    label:'API /public checkConnection valide',
-                    timestamp:Math.round(+new Date()/1000),
-                    token:token,
-                    username:username,
-                    firstName:firstName,
-                    lastName:lastName
-                    };    
-                    
-                response.writeHead(200, {'Content-Type': "application/x-json"});
-                response.end(JSON.stringify(data_out));
-                
-            }
-        }
-    });
-
-
-}
-
