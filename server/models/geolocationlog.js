@@ -1,6 +1,6 @@
 americano = require('americano');
 
-module.exports = GeolocationLog = americano.getModel('GeolocationLog', {
+module.exports = GeolocationLog = americano.getModel('geolocationlog', {
  'origin': String,
  'idMesInfos': String,
  'timestamp': Date,

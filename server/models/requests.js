@@ -6,11 +6,11 @@
 americano = require('americano');
 
 module.exports = {
-    GeolocationLog: {
+    geolocationlog: {
         all: americano.defaultRequests.all
     },
     
-    Identity: {
+    identity: {
         all: americano.defaultRequests.all
         
     }    

@@ -1,6 +1,6 @@
 americano = require('americano');
 
-module.exports = Identity = americano.getModel('Identity', {
+module.exports = Identity = americano.getModel('identity', {
     'idMesInfos': String,
     'lastName': String,
     'firstName': String
