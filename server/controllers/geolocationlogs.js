@@ -1,6 +1,4 @@
 var url = require('url');
-var http = require('http');
-var querystring = require('querystring');
 
 GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
