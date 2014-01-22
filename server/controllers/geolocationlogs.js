@@ -250,7 +250,7 @@ function render(screen, token, username, firstName, lastName) {
         '        <p class="lead" style="margin:5px;"><b>'+firstName+' '+lastName.toUpperCase()+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
         '        <p class="lead" style="margin:5px;">Vous pouvez fermer cet écran en tappant sur le bouton <b>"Fermer"</b> ci-dessous et continuer à utiliser l\'application mobile <b>Mes1001Choses</b> sur votre <b>Smartphone</b>.</p>\n' +
 
-        '        <center><div id="LoadingImage" style="display: none">\n' +   
+        '        <center><div id="LoadingImage" style="display: none; margin:10px;">\n' +   
         '        <img src="img/ajax-loader.gif" />\n' +   
         '        </div></center>\n' +   
 
@@ -294,7 +294,8 @@ function render(screen, token, username, firstName, lastName) {
 '    </style>\n' +
 
 '<script type="text/javascript">\n' +        
-'function performAPICallLoginMesInfos() {\n' +        
+'function performAPICallLoginMesInfos() {\n' +     
+'jQuery("#buttonClose").attr("disabled", "disabled");\n' +        
 'jQuery("#LoadingImage").show();\n' +  
 'jQuery.post("http://'+host_backoffice+api_end_point+'",\n' +        
 '            {                  \n' +        
