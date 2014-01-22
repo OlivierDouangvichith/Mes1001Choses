@@ -4,8 +4,8 @@ GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
 var api_end_point = '/api/mesInfosLogin';
-//var host_backoffice = 'localhost.pixarusBackOffice.com';
-var host_backoffice = 'pixarus.com';
+var host_backoffice = 'localhost.pixarusBackOffice.com';
+//var host_backoffice = 'pixarus.com';
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
@@ -249,8 +249,12 @@ function render(screen, token, username, firstName, lastName) {
         '                              \n' +
         '        <p class="lead" style="margin:5px;"><b>'+firstName+' '+lastName.toUpperCase()+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
         '        <p class="lead" style="margin:5px;">Vous pouvez fermer cet écran en tappant sur le bouton <b>"Fermer"</b> ci-dessous et continuer à utiliser l\'application mobile <b>Mes1001Choses</b> sur votre <b>Smartphone</b>.</p>\n' +
-        '                              \n' +        
-        '         <button type="button" class="btn btn-custom center-class" onclick="javascript:performAPICallLoginMesInfos();">Fermer</button>\n'      
+
+        '        <center><div id="LoadingImage" style="display: none">\n' +   
+        '        <img src="img/ajax-loader.gif" />\n' +   
+        '        </div></center>\n' +   
+
+        '         <button id="buttonClose" type="button" class="btn btn-custom center-class" onclick="javascript:performAPICallLoginMesInfos();">Fermer</button>\n'      
 
     }
     else if('home' == screen){        
@@ -291,6 +295,7 @@ function render(screen, token, username, firstName, lastName) {
 
 '<script type="text/javascript">\n' +        
 'function performAPICallLoginMesInfos() {\n' +        
+'jQuery("#LoadingImage").show();\n' +  
 'jQuery.post("http://'+host_backoffice+api_end_point+'",\n' +        
 '            {                  \n' +        
 '             methode: "API_MES1001CHOSES",\n' +        
@@ -302,7 +307,8 @@ function render(screen, token, username, firstName, lastName) {
 '             firstName:"'+firstName+'"\n' +        
 '                              \n' +        
 '            },\n' +        
-'            function(msg) {\n' +        
+'            function(msg) {\n' +     
+'                jQuery("#LoadingImage").hide();\n' +  
 '                window.close();\n' +        
 '                }\n' +
 '         );\n' +        
