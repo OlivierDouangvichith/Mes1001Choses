@@ -4,8 +4,9 @@ GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
 var api_end_point = '/api/mesInfosLogin';
-//var host_backoffice = 'localhost.pixarusBackOffice.com';
-var host_backoffice = 'pixarus.com';
+var host_backoffice = 'localhost.pixarusBackOffice.com';
+
+//var host_backoffice = 'pixarus.com';
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
