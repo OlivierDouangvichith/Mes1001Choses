@@ -5,7 +5,6 @@ Identity = require('../models/identity');
 
 var api_end_point = '/api/mesInfosLogin';
 //var host_backoffice = 'localhost.pixarusBackOffice.com';
-
 var host_backoffice = 'pixarus.com';
 
 /**
@@ -243,12 +242,18 @@ function render(screen, token, username, firstName, lastName) {
     
     titleHtml1='Mes1001Choses';
     
+    var ffname='';
+    
+    if (firstName && lastName) {
+        ffname=firstName+' '+lastName.toUpperCase();
+    }
+    
     if('mobileLogin' == screen){        
         titleHtml2='Bienvenue sur l\'application mobile Mes1001Choses';
         
         bodyHtml +=        
         '                              \n' +
-        '        <p class="lead" style="margin:5px;"><b>'+firstName+' '+lastName.toUpperCase()+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
+        '        <p class="lead" style="margin:5px;"><b>'+ffname+'</b>, vous venez de vous authentifier avec succès à l\'application mobile <b>Mes1001Choses</b> sur la plate-forme MesInfos ! </p>\n' +
         '        <p class="lead" style="margin:5px;">Vous pouvez fermer cet écran en tappant sur le bouton <b>"Fermer"</b> ci-dessous et continuer à utiliser l\'application mobile <b>Mes1001Choses</b> sur votre <b>Smartphone</b>.</p>\n' +
 
         '        <center><div id="LoadingImage" style="display: none; margin:10px;">\n' +   
@@ -334,7 +339,6 @@ function render(screen, token, username, firstName, lastName) {
 '    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>\n' +
 '  </body>\n' +
 '</html>\n'
-
 
     return header + bodyHtml + footer ;
 }
