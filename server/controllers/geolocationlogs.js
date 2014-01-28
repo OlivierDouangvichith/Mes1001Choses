@@ -9,8 +9,9 @@ var host_backoffice = 'pixarus.com';
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
- * /mobileLogin?token=1235rttytyyYYUuu678
- * Ex: http://localhost:9104/apps/mes1001choses/mobileLogin?token=1234567890azertyyy
+ * /mobileLogin?token=1235rttytyyYYUuu678&username=testAERTY
+ * 
+ * Ex: http://localhost:9104/apps/mes1001choses/mobileLogin?token=1234567890azertyyy&username=testAERTY
  **/
 module.exports.login = function(req, res) {
   var srvUrl = url.parse('http://' + req.url);
@@ -19,10 +20,12 @@ module.exports.login = function(req, res) {
   console.log('/mobileLogin host : ' + req.host);
   
   var token_value = req.query.token;
+  var username_value = req.query.username;
+  console.log('/mobileLogin username_value : ' + username_value);
   console.log('/mobileLogin token_value : ' + token_value);
   
   if(token_value.length >0){
-    performSimpleCall('mobileLogin', token_value, req, res);
+    performSimpleCall('mobileLogin', token_value, username_value, req, res);
   }
   else {
     res.send(200, '');
@@ -49,8 +52,9 @@ module.exports.home = function(req, res) {
  * Acces public => Accés sans authentification
  * 
  * Traitement des appel API entre Cozy et l'appli mobile.
- * Format de requete : /public?q=requete&token=12345azerty678ghvbnSDrfff
- * Ex: http://localhost:9104/public/mes1001choses/?q=requete&token=12345azerty678ghvbnSDrfff
+ * Format de requete : /public?q=requete&token=12345azerty678ghvbnSDrfff&username=testAERTY
+ * 
+ * Ex: http://localhost:9104/public/mes1001choses/?q=requete&token=12345azerty678ghvbnSDrfff&username=testAERTY
  * 
  * REQUESTE (requete) :
  * 1. checkConnection
@@ -66,9 +70,10 @@ module.exports.api = function(req, res) {
     if(req.query.q.length >0 && req.host.length >0){
         
         var hostnames = req.host.split("."); 
-        var username = hostnames[0];
+        //var username = hostnames[0];
+        var username_value = req.query.username;
         
-        console.log('API /public username : ' + username);
+        console.log('API /public username_value : ' + username_value);
         console.log('API /public requete : ' + req.query.q);
         
         var requete = req.query.q;
@@ -77,12 +82,12 @@ module.exports.api = function(req, res) {
         console.log('API /public token_value : ' + token_value);
         
         //Test de username et token
-        if('cozycloud' != username && token_value.length >0){
+        if('cozycloud' != username_value && token_value.length >0){
         
             //checkConnection
             if('checkConnection' == requete){
                 console.log('API /public CHECKCONNECTION');                
-                performSimpleCall('checkConnection', token_value, req, res);
+                performSimpleCall('checkConnection', username_value, token_value, req, res);
             }
             //Locations
             else if('locations' == requete){
@@ -110,7 +115,7 @@ module.exports.api = function(req, res) {
                                     token:token_value,
                                     url:req.host,
                                     query:srvUrl.query,
-                                    username:username,
+                                    username:username_value,
 
                                     identity : {"Identity": instances_id},
                                     data: {"GeolocationLog": instances}
@@ -133,7 +138,7 @@ module.exports.api = function(req, res) {
                 timestamp:Math.round(+new Date()/1000),
                 url:req.host,
                 query:srvUrl.query,
-                username:username
+                username:username_value
                 };  
 
             responseApiCall(data_out, req, res);
@@ -158,9 +163,9 @@ module.exports.api = function(req, res) {
 /**
  * Appel simple
  */
-function performSimpleCall(call, token, request, response) {
-    var hostnames = request.host.split("."); 
-    var username = hostnames[0];
+function performSimpleCall(call, token, username, request, response) {
+    //var hostnames = request.host.split("."); 
+    //var username = hostnames[0];
         
     console.log('API /mobileLogin username : ' + username);
 
@@ -175,8 +180,8 @@ function performSimpleCall(call, token, request, response) {
             var firstName = null;
             var lastName = null;
             
-            for (idx in identity.Identity) {
-                idDetail = identity.Identity[idx];            
+            for (var idx in identity.Identity) {
+                var idDetail = identity.Identity[idx];            
                 
                 firstName = idDetail.firstName;
                 lastName = idDetail.lastName;
