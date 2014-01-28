@@ -69,7 +69,7 @@ module.exports.api = function(req, res) {
     
     if(req.query.q.length >0 && req.host.length >0){
         
-        var hostnames = req.host.split("."); 
+        //var hostnames = req.host.split("."); 
         //var username = hostnames[0];
         var username_value = req.query.username;
         
