@@ -273,7 +273,7 @@ function render(screen, token, username, firstName, lastName) {
         
         bodyHtml +=        
         '                              \n' +
-        '        <p class="lead" style="margin:5px;">L\'application <b>Mes1001Choses</b> permet de mieux se connaître pour élargir ses horizons. Elle vous révèle vos routines (géographiques, comportementales, …) et vous permet de les évaluer :</p>\n' +
+        '        <p class="lead" style="margin:5px;">L\'application mobile <b>Mes1001Choses</b> permet de mieux se connaître pour élargir ses horizons. Elle vous révèle vos routines (géographiques, comportementales, …) et vous permet de les évaluer :</p>\n' +
         '        <ul>\n' +        
         '        <li>Est-ce que cela me satisfait ?</li>\n' +        
         '        <li>Ai-je envie de changer mon comportement, de découvrir de nouveaux lieux, de nouveaux horizons, de nouvelles expériences ?</li>\n' +        
