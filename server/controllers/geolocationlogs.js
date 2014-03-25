@@ -281,8 +281,8 @@ function render(screen, token, username, firstName, lastName) {
         '        </ul>\n' +        
         '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ? ;-)</p>\n' +
         '        <p class="lead" style="margin:5px;">L\'application est disponible sur <b>Smartphone iOS</b> et <b>Android</b></p>\n' +
-        '        <p class="lead" style="margin:5px;"><a href="https://itunes.apple.com/fr/app/mes1001choses/id839499594?mt=8" border="0"><img src="img/logo_appstore.jpg" width="100" height="40"/></a></p>\n' +
-        '        <p class="lead" style="margin:5px;"><a href="https://play.google.com/store/apps/details?id=com.mes1001choses.android.Mes1001Choses" border="0"><img src="img/logo_andoid.png" width="100" height="40"/></a></p>\n' +        
+        '        <p class="lead" style="margin:5px;"><a href="https://itunes.apple.com/fr/app/mes1001choses/id839499594?mt=8" border="0" target="_blank"><img src="img/logo_appstore.jpg" width="100" height="40"/></a></p>\n' +
+        '        <p class="lead" style="margin:5px;"><a href="https://play.google.com/store/apps/details?id=com.mes1001choses.android.Mes1001Choses" border="0" target="_blank"><img src="img/logo_andoid.png" width="100" height="40"/></a></p>\n' +        
         '                              \n' +        
         '         \n'      
         
