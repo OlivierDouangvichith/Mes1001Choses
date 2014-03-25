@@ -1,7 +1,7 @@
 {
   "name": "Mes1001Choses",
   "version": "0.0.1",
-  "description": "L'application mobile Mes1001Choses permet de mieux se connaître pour élargir ses horizons. Elle vous révèle vos routines (géographiques, comportementales, …) et vous permet de les évaluer",
+  "description": "L'application mobile Mes1001Choses, disponible pour Smartphone iOS et Android, permet de mieux se connaître pour élargir ses horizons. Elle vous révèle vos routines (géographiques, comportementales, …) et vous permet de les évaluer",
   "repository": {
     "type": "git",
     "url": "https://github.com/OlivierDouangvichith/Mes1001Choses.git"
