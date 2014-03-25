@@ -4,8 +4,8 @@ GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
 
 var api_end_point = '/api/mesInfosLogin';
-var host_backoffice = 'localhost.pixarusBackOffice.com';
-//var host_backoffice = 'pixarus.com';
+//var host_backoffice = 'localhost.pixarusBackOffice.com';
+var host_backoffice = 'pixarus.com';
 
 /**
  * Acces privé => Ca demande l'autentification avant d'y acceder
@@ -280,9 +280,9 @@ function render(screen, token, username, firstName, lastName) {
         //'        <li>...</li>\n' +        
         '        </ul>\n' +        
         '        <p class="lead" style="margin:5px;">Après tout, la vie c’est bien aussi quand c’est pas toujours pareil, n\'est-ce pas ? ;-)</p>\n' +
-        '        <p class="lead" style="margin:5px;">L\'application sera <b>bientôt</b> disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
-        '        <p class="lead" style="margin:5px;"><a href="#" border="0"><img src="img/logo_appstore.jpg" width="100" height="40"/></a></p>\n' +
-        '        <p class="lead" style="margin:5px;"><a href="#" border="0"><img src="img/logo_andoid.png" width="100" height="40"/></a></p>\n' +        
+        '        <p class="lead" style="margin:5px;">L\'application est disponible sur <b>Smartphone iOS</b> et <b>Andoid</b></p>\n' +
+        '        <p class="lead" style="margin:5px;"><a href="https://itunes.apple.com/fr/app/mes1001choses/id839499594?mt=8" border="0"><img src="img/logo_appstore.jpg" width="100" height="40"/></a></p>\n' +
+        '        <p class="lead" style="margin:5px;"><a href="https://play.google.com/store/apps/details?id=com.mes1001choses.android.Mes1001Choses" border="0"><img src="img/logo_andoid.png" width="100" height="40"/></a></p>\n' +        
         '                              \n' +        
         '         \n'      
         
