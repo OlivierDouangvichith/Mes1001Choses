@@ -149,7 +149,7 @@ module.exports.api = function(req, res) {
             console.log('API /public username ou token non valide');
             data_out = {
                 code:'KO',
-                label:'API /public username ou token non valide',   
+                label:'API /public username ou token non valide mmucSession='+mmucSession,   
                 timestamp:Math.round(+new Date()/1000),
                 url:req.host,
                 query:srvUrl.query,
