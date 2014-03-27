@@ -24,7 +24,11 @@
     },
     "Identity": {
         "description": "Visualiser votre nom et prénom."
-    }    
+    },
+    "MMUCSession" : {
+        "description": "Sauvegarder la session Mes10001Choses de mes appareils mobiles."
+    }
+    
   }  
   
 }

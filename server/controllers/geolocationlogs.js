@@ -2,6 +2,7 @@ var url = require('url');
 
 GeolocationLog = require('../models/geolocationlog');
 Identity = require('../models/identity');
+MMUCSession = require('../models/mmucsession');
 
 var api_end_point = '/api/mesInfosLogin';
 //var host_backoffice = 'localhost.pixarusBackOffice.com';
@@ -81,8 +82,12 @@ module.exports.api = function(req, res) {
         
         console.log('API /public token_value : ' + token_value);
         
+        //Done : recuperation de la session (par le token)
+        MMUCSession.find(token_value, function(err, mmucSession) {
+        
         //Test de username et token
-        if('cozycloud' != username_value && token_value.length >0){
+        if(!err && 'cozycloud' != username_value && mmucSession){
+        //if('cozycloud' != username_value && token_value.length >0){
         
             //checkConnection
             if('checkConnection' == requete){
@@ -93,7 +98,10 @@ module.exports.api = function(req, res) {
             else if('locations' == requete){
                 console.log('API /public LOCATIONS');
                 
-                  GeolocationLog.all(function(err, instances) {
+                // DONE : get some geoloc only.
+                GeolocationLog.slice(mmucSession.lastSentDate, function(err, instances) {
+                
+                //  GeolocationLog.all(function(err, instances) {
                     if(err != null) {
                       res.end(500, "An error has occurred -- " + err);
                     }
@@ -121,9 +129,16 @@ module.exports.api = function(req, res) {
                                     data: {"GeolocationLog": instances}
                                     };
                                 
-                                responseApiCall(data_out, req, res);
+
+                                // DONE : update session here !!
+                                mmucSession.lastSentDate = instances[instances.length-1].timestamp.toISOString();
+                                mmucSession.save(function(err) {
+                                    if (err) { console.log(err); }
+
+                                    responseApiCall(data_out, req, res);
+                                });
                               }
-                            });                
+                            });
 
                         }
                   });                
@@ -144,7 +159,8 @@ module.exports.api = function(req, res) {
             responseApiCall(data_out, req, res);
         }
              
-    }
+    }); // End callback MMUCSessionfind
+    } 
     else {
         console.log('API /public requete non valide');        
         data_out = {
@@ -194,7 +210,9 @@ function performSimpleCall(call, token, username, request, response) {
             if('mobileLogin' == call){
                 
                 var html = render('mobileLogin', token, username, firstName, lastName);
-                response.send(200, html);                
+                response.send(200, html);
+                //TODO Set token here !!
+                MMUCSession.setToken(token, function(err, obj) { console.log(err);});
             }
             else if('checkConnection'==call){
                 

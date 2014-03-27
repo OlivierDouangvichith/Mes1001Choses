@@ -15,9 +15,9 @@ module.exports = {
 
     geolocationlog: {
 
-        all: function(doc) {
+        byTimestamp: function(doc) {
             if (!doc.state) {
-                emit(doc._timestamp, doc);
+                emit(doc.timestamp, doc);
             }
         }
 

@@ -31,13 +31,22 @@ GeolocationLog.touch = function() {
 
 };
 
-GeolocationLog.all = function(callback) {
+GeolocationLog.slice = function(start, callback) {
     GeolocationLog.request(
-        "all", 
-        {limit: 100},
+        "byTimestamp", 
+        {
+            startkey: start,
+            limit: 1000
+        },
         function(err, instances) {
-            callback(null, instances);
+            if (err) {
+                callback(err, null);
+            } else if (instances.length == 0) {
+                callbakc("No data", null);
+            } else {
+                callback(null, instances);
+            }
         }
     );
-};
+};    
 
