@@ -34,7 +34,7 @@ GeolocationLog.touch = function() {
 GeolocationLog.all = function(callback) {
     GeolocationLog.request(
         "all", 
-        {},
+        {limit: 100},
         function(err, instances) {
             callback(null, instances);
         }
