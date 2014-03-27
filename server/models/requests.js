@@ -1,13 +1,26 @@
 /*
 * Put here the requests to the DataSystem.
 * GeolocationLog et Identity en lowercase !!
+* 
+* 
+    geolocationlog: {
+        all: americano.defaultRequests.all
+    },
+
 */
 
 americano = require('americano');
 
 module.exports = {
+
     geolocationlog: {
-        all: americano.defaultRequests.all
+
+        all: function(doc) {
+            if (!doc.state) {
+                emit(doc._id, doc);
+            }
+        }
+
     },
     
     identity: {
