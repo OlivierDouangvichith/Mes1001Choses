@@ -17,7 +17,7 @@ module.exports = {
 
         all: function(doc) {
             if (!doc.state) {
-                emit(doc._id, doc);
+                emit(doc._timestamp, doc);
             }
         }
 
