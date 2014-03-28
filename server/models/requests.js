@@ -2,13 +2,7 @@
 * Put here the requests to the DataSystem.
 * GeolocationLog et Identity en lowercase !!
 * 
-* 
-    geolocationlog: {
-        all: americano.defaultRequests.all
-    },
-
 */
-
 americano = require('americano');
 
 module.exports = {
@@ -16,7 +10,7 @@ module.exports = {
     geolocationlog: {
 
         byTimestamp: function(doc) {
-            if (!doc.state) {
+            if (!doc.deviceState) {
                 emit(doc.timestamp, doc);
             }
         }
