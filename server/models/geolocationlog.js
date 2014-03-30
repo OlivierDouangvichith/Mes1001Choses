@@ -36,7 +36,7 @@ GeolocationLog.slice = function(start, callback) {
         "byTimestamp", 
         {
             startkey: start,
-            limit: 1000
+            limit: 500
         },
         function(err, instances) {
             if (err) {
